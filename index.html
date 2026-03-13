@@ -1,1 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard BI - Vendas 2024</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-card: #1a1a1a;
+            --accent: #00d4aa;
+            --accent-secondary: #6366f1;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --border: #27272a;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* KPIs Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .kpi-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .kpi-value.accent {
+            color: var(--accent);
+        }
+
+        .kpi-value.positive {
+            color: #10b981;
+        }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .chart-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chart-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+
+        .chart-container.tall {
+            height: 300px;
+        }
+
+        /* Tabela minimalista */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Dashboard de Vendas</h1>
+            <p class="subtitle">Período: Janeiro - Dezembro 2024 | Base: 1140 pedidos</p>
+        </header>
+
+        <!-- KPIs -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">Total de Vendas</div>
+                <div class="kpi-value">R$ 580,976.68</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Lucro Total</div>
+                <div class="kpi-value positive">R$ 188,642.80</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Margem Média</div>
+                <div class="kpi-value accent">37.7%</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Ticket Médio</div>
+                <div class="kpi-value">R$ 509.63</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Total Pedidos</div>
+                <div class="kpi-value">1140</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Unidades Vendidas</div>
+                <div class="kpi-value">6,473</div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="chart-card full-width">
+                <div class="chart-header">
+                    <span class="chart-title">Evolução Mensal de Vendas vs Lucro</span>
+                </div>
+                <div class="chart-container tall">
+                    <canvas id="chartMensal"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Vendas por Categoria</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartCategoria"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Performance por Vendedor</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartVendedor"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Top 10 Estados</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartEstado"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Top 10 Produtos</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartProduto"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela de Vendedores -->
+        <div class="chart-card full-width">
+            <div class="chart-header">
+                <span class="chart-title">Ranking de Vendedores</span>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Vendedor</th>
+                            <th class="text-right">Vendas Totais</th>
+                            <th class="text-right">Ticket Médio</th>
+                            <th class="text-right">Unidades</th>
+                            <th class="text-right">Participação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaVendedores">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados do dashboard
+        const data = {"kpis": {"total_vendas": 580976.68, "total_custos": 392333.88, "lucro_total": 188642.8, "margem_media": 37.7, "total_pedidos": 1140, "total_produtos": 6473, "ticket_medio": 509.63}, "categorias": {"labels": ["Suplementos", "Outros", "Grãos", "Óleos"], "vendas": [360374.17, 86365.26, 75856.37, 58380.88], "percentuais": [62.0, 14.9, 13.1, 10.0]}, "vendedores": {"labels": ["RAVENNA", "ADRIELLE", "BRUNA", "ANNA", "ANGÉLICA"], "vendas": [122882.04, 115675.38, 115229.39, 113676.91, 113512.95], "tickets": [538.96, 507.35, 505.39, 498.58, 497.86]}, "mensal": {"labels": ["2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"], "vendas": [45503.09, 48851.38, 57370.69, 49852.82, 50299.64, 49000.22, 50226.42, 42971.93, 48788.82, 45147.73, 47923.33, 45040.6], "lucros": [15539.18, 15527.59, 18781.92, 15663.87, 16417.61, 14757.68, 18646.78, 14392.23, 14708.1, 14834.54, 15915.2, 13458.1]}, "estados": {"labels": ["Goiás", "Santa Catarina", "Rio Grande do Norte", "São Paulo", "Roraima", "Ceará", "Pernambuco", "Mato Grosso do Sul", "Piauí", "Rio de Janeiro"], "vendas": [42478.37, 41286.97, 37859.34, 36511.15, 36351.43, 34727.67, 33153.81, 33066.72, 32962.55, 32121.59]}, "produtos": {"labels": ["Creatina 120 caps", "Ômega 3 60 caps", "Azeite 500ml", "Creatina 300g", "Café 1Kg", "Coenzima Q10", "Café 250g", "Ômega 3 180 caps", "Pasta Amendoim 500g", "Pré-treino 300g"], "vendas": [135681.12, 60877.01, 58380.88, 46403.22, 41665.78, 38467.27, 34190.59, 26597.29, 23867.43, 23751.18]}};
+
+        // Configuração global dos gráficos
+        Chart.defaults.color = '#a1a1aa';
+        Chart.defaults.borderColor = '#27272a';
+        Chart.defaults.font.family = "'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif";
+
+        // 1. Gráfico Mensal (Linha)
+        new Chart(document.getElementById('chartMensal'), {
+            type: 'line',
+            data: {
+                labels: data.mensal.labels.map(m => m.slice(5)),
+                datasets: [{
+                    label: 'Vendas',
+                    data: data.mensal.vendas,
+                    borderColor: '#00d4aa',
+                    backgroundColor: 'rgba(0, 212, 170, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 3,
+                    pointBackgroundColor: '#00d4aa'
+                }, {
+                    label: 'Lucro',
+                    data: data.mensal.lucros,
+                    borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 3,
+                    pointBackgroundColor: '#6366f1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1a1a1a',
+                        borderColor: '#27272a',
+                        borderWidth: 1,
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': R$ ' + context.parsed.y.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(39, 39, 42, 0.5)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return 'R$ ' + (value / 1000).toFixed(0) + 'k';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. Gráfico de Categorias (Doughnut)
+        new Chart(document.getElementById('chartCategoria'), {
+            type: 'doughnut',
+            data: {
+                labels: data.categorias.labels,
+                datasets: [{
+                    data: data.categorias.vendas,
+                    backgroundColor: ['#00d4aa', '#6366f1', '#f59e0b', '#ef4444'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1a1a1a',
+                        borderColor: '#27272a',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed;
+                                const percent = data.categorias.percentuais[context.dataIndex];
+                                return label + ': R$ ' + value.toLocaleString('pt-BR', {minimumFractionDigits: 2}) + ' (' + percent + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 3. Gráfico de Vendedores (Barra horizontal)
+        new Chart(document.getElementById('chartVendedor'), {
+            type: 'bar',
+            data: {
+                labels: data.vendedores.labels,
+                datasets: [{
+                    label: 'Vendas',
+                    data: data.vendedores.vendas,
+                    backgroundColor: '#00d4aa',
+                    borderRadius: 4,
+                    barThickness: 20
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1a1a1a',
+                        borderColor: '#27272a',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return 'R$ ' + context.parsed.x.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(39, 39, 42, 0.5)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return 'R$ ' + (value / 1000).toFixed(0) + 'k';
+                            }
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // 4. Gráfico de Estados (Barra)
+        new Chart(document.getElementById('chartEstado'), {
+            type: 'bar',
+            data: {
+                labels: data.estados.labels,
+                datasets: [{
+                    label: 'Vendas',
+                    data: data.estados.vendas,
+                    backgroundColor: '#6366f1',
+                    borderRadius: 4,
+                    barThickness: 16
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1a1a1a',
+                        borderColor: '#27272a',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return 'R$ ' + context.parsed.y.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(39, 39, 42, 0.5)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return 'R$ ' + (value / 1000).toFixed(0) + 'k';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+
+        // 5. Gráfico de Produtos (Barra horizontal)
+        new Chart(document.getElementById('chartProduto'), {
+            type: 'bar',
+            data: {
+                labels: data.produtos.labels.map(p => p.length > 15 ? p.substring(0, 15) + '...' : p),
+                datasets: [{
+                    label: 'Vendas',
+                    data: data.produtos.vendas,
+                    backgroundColor: '#f59e0b',
+                    borderRadius: 4,
+                    barThickness: 18
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1a1a1a',
+                        borderColor: '#27272a',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return 'R$ ' + context.parsed.x.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(39, 39, 42, 0.5)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return 'R$ ' + (value / 1000).toFixed(0) + 'k';
+                            }
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Preencher tabela de vendedores
+        const tbody = document.getElementById('tabelaVendedores');
+        const totalVendas = data.vendedores.vendas.reduce((a, b) => a + b, 0);
+
+        data.vendedores.labels.forEach((vendedor, index) => {
+            const vendas = data.vendedores.vendas[index];
+            const ticket = data.vendedores.tickets[index];
+            const participacao = ((vendas / totalVendas) * 100).toFixed(1);
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><strong>${vendedor}</strong></td>
+                <td class="text-right">R$ ${vendas.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                <td class="text-right">R$ ${ticket.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                <td class="text-right">${data.vendedores.vendas[index]}</td>
+                <td class="text-right"><span class="badge">${participacao}%</span></td>
+            `;
+            tbody.appendChild(row);
+        });
+    </script>
+</body>
+</html>
