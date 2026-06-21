@@ -64,19 +64,7 @@ Em breve adicionarei novos projetos!
 
 ---
 
-## 📈 Estatísticas
 
-<p align="center">
-
-<img height="170em" src="https://github-readme-stats.vercel.app/api?username=annajuliadefreitassantos&show_icons=true&theme=tokyonight"/>
-
-<img height="170em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=annajuliadefreitassantos&layout=compact&theme=tokyonight"/>
-
-</p>
-
----
-
-<div align="center">
 
 ### 💡 Frase que me inspira
 
