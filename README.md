@@ -1,18 +1,87 @@
-# 🚀 Projeto: Desenvolvedor Iniciante
+<div align="center">
 
-Este é o meu repositório de entrada no mundo da programação! Aqui pretendo documentar minha evolução, guardar meus primeiros códigos e organizar meus estudos.
+# 👋 Olá, eu sou a Anna Julia!
 
-## 🛠️ Tecnologias que estou aprendendo:
-* **HTML5:** Estruturação de páginas web.
-* **CSS3:** Estilização e layouts.
-* **Git & GitHub:** Versionamento e organização.
+### ⚖️ Estudante de Direito | 💻 Desenvolvedora em formação
 
-## 📂 O que tem aqui?
-Atualmente, este repositório contém:
-- `index.html`: Minha primeira estrutura de página.
+*"Aprendendo um pouco mais todos os dias."* 🚀
 
-## 🎯 Objetivo
-Meu objetivo principal é dominar as bases do desenvolvimento web e construir projetos que resolvam problemas reais enquanto aprendo.
+</div>
 
 ---
-"O segredo para avançar é começar."
+
+## 👩‍💻 Sobre mim
+
+🎓 Estudante de Direito (2º semestre) – Universidade Cruzeiro do Sul
+
+💻 Atualmente estudando Desenvolvimento Web
+
+📚 Aprendendo HTML, CSS, Git e GitHub
+
+🚀 Em busca do meu primeiro estágio
+
+📍 São Paulo - Brasil
+
+---
+
+## 🛠 Tecnologias
+
+<p>
+<img src="https://skillicons.dev/icons?i=html,css,git,github,vscode" />
+</p>
+
+---
+
+## 📚 O que estou estudando
+
+- ✅ HTML5
+- ✅ CSS3
+- ✅ Git
+- ✅ GitHub
+- 🔄 JavaScript
+- 🔄 Python
+
+---
+
+## 📂 Projetos
+
+📁 **dev-iniciante**
+
+Meu primeiro projeto de programação, criado para registrar minha evolução e praticar os conceitos que estou aprendendo.
+
+Em breve adicionarei novos projetos!
+
+---
+
+## 🎯 Objetivos
+
+✔ Evoluir como desenvolvedora
+
+✔ Construir projetos práticos
+
+✔ Conseguir meu primeiro estágio
+
+
+---
+
+## 📈 Estatísticas
+
+<p align="center">
+
+<img height="170em" src="https://github-readme-stats.vercel.app/api?username=annajuliadefreitassantos&show_icons=true&theme=tokyonight"/>
+
+<img height="170em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=annajuliadefreitassantos&layout=compact&theme=tokyonight"/>
+
+</p>
+
+---
+
+<div align="center">
+
+### 💡 Frase que me inspira
+
+> "Todo especialista já foi iniciante."
+
+⭐ Obrigada por visitar meu perfil!
+
+</div>
