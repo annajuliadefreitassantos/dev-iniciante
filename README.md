@@ -68,7 +68,7 @@ Em breve adicionarei novos projetos!
 
 ### 💡 Frase que me inspira
 
-> "Todo especialista já foi iniciante."
+> "O segredo para avançar é começar."
 
 ⭐ Obrigada por visitar meu perfil!
 
